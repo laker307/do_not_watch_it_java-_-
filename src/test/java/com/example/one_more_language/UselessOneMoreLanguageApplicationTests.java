@@ -1,4 +1,4 @@
-package com.example.useless_one_more_language;
+package com.example.one_more_language;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
