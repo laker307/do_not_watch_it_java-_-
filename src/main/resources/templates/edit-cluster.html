@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование кластера</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ClusterStats</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form action="/cluster/edit" method="post">
+                <!-- Используем скрытое поле (hidden), чтобы незаметно пробрасывать в форму id записи -->
+                <!-- Используем data-th-value для задания значения полю -->
+                <input id="id" name="id" hidden data-th-value="${clusterDTO.id}">
+                <div class="row my-3">
+                    <label for="name" class="col-sm-2 col-form-label">Cluster</label>
+                    <div class="col-8">
+                        <input data-th-value="${clusterDTO.name}" type="text" class="form-control" name="name" id="name">
+                    </div>
+                    <div
+                            class="alert alert-warning"
+                            data-th-text="${#fields.errors('clusterDTO.name')}"
+                            data-th-if="${#fields.hasErrors('clusterDTO.name')}"
+                    ></div>
+                </div>
+                <div class="row mb-3">
+                    <label for="cloud" class="col-sm-2 col-form-label">Cloud</label>
+                    <div class="col-8">
+                        <input data-th-value="${clusterDTO.cloud}" type="text" class="form-control" name="cloud"
+                               id="cloud">
+                    </div>
+                    <div
+                            class="alert alert-warning"
+                            data-th-if="${#fields.hasErrors('clusterDTO.cloud')}"
+                            data-th-each="err : ${#fields.errors('clusterDTO.cloud')}"
+                            data-th-text="${err}"
+                    ></div>
+
+                </div>
+                <div class="row mb-3">
+                    <label for="cloud" class="col-sm-2 col-form-label">Cloud</label>
+                    <div class="col-8">
+                        <input data-th-value="${clusterDTO.size}" type="text" class="form-control" name="size"
+                               id="size">
+                    </div>
+                    <div
+                            class="alert alert-warning"
+                            data-th-if="${#fields.hasErrors('clusterDTO.size')}"
+                            data-th-each="err : ${#fields.errors('clusterDTO.size')}"
+                            data-th-text="${err}"
+                    ></div>
+
+                </div>
+                <div class="row my-3">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

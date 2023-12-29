@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clusters</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">ClustersStats</a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Главная</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Cloud</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- этот tr будет размножен на каждую запись списка ${list} -->
+                <!-- clustert содержит объект записи, а index - информацию о позиции -->
+                <tr data-th-each="cluster,index : ${list}">
+                    <!-- index.count - нумерация элементов коллекции, начиная с 1 -->
+                    <th scope="row" data-th-text="${index.count}"></th>
+                    <!-- используем data-th-text для инлайнинга значений  -->
+                    <td data-th-text="${cluster.name}"></td>
+                    <td data-th-text="${cluster.cloud}"></td>
+                    <td data-th-text="${cluster.size}"></td>
+                    <td class="d-flex flex-row justify-content-around">
+                        <!-- используем data-th-href задания параметризированной ссылки  -->
+                        <!-- используем || как параметризированную строку  -->
+                        <a data-th-href="${cluster.id}" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                            </svg>
+                        </a>
+                        <!-- используем data-th-href задания параметризированной ссылки  -->
+                        <!-- используем || как параметризированную строку  -->
+                        <a data-th-href="@{|edit/${cluster.id}|}" class="btn btn-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-pen" viewBox="0 0 16 16">
+                                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"></path>
+                            </svg>
+                        </a>
+                        <!-- Оборачиваем кнопку и поле в форму, так как все изменения выполняем через POST метод -->
+                        <form action="remove" method="post">
+                            <!-- Используем скрытое поле (hidden), чтобы незаметно пробрасывать в форму id записи -->
+                            <!-- Используем data-th-value для задания значения полю -->
+                            <input id="id" name="id" hidden data-th-value="${cluster.id}">
+                            <button type="submit" class="btn btn-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"></path>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <!-- Строка с формой для добавления данных -->
+                <tr>
+                    <form action="add" method="post">
+                        <!-- Первую колонку не трогаем -->
+                        <th scope="row"></th>
+                        <td> <!-- Во второй прописываем поле для задания имени -->
+                            <!-- Используем data-th-value для задания начального значения поля -->
+                            <!-- Выражение ${clusterDTO}?${clusterDTO.name}:'' использует тернарный оператор -->
+                            <!-- Выражение ${clusterDTO}? задает условие "если объект(ключ) clusterDTO есть в модели" -->
+                            <!-- Если условие верно, то, значит, пользователь допустил ошибку, и мы вернули его предыдущий ввод в объекте clusterDTO -->
+                            <!-- Иначе, если объекта clusterDTO нет, то никакого значения подставлять не требуется -->
+                            <input class="w-75" type="text" id="name" name="name" data-th-value="${clusterDTO}?${clusterDTO.name}:''">
+                        </td>
+                        <td>
+                            <input class="w-75" type="text" id="Cloud" name="Cloud" data-th-value="${clusterDTO}?${clusterDTO.Cloud}:''">
+                        </td>
+                        <td>
+                            <input class="w-75" type="text" id="size" name="size" data-th-value="${clusterDTO}?${clusterDTO.Cloud}:''">
+                        </td>
+                        <td class="display-flex justify-content-center">
+                            <button type="submit" class="btn btn-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                                </svg>
+                            </button>
+                        </td>
+                    </form>
+                </tr>
+                <!-- Дополнительная строка с информацией об ошибках валидации -->
+                <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
+                <!-- Выражение: ${clusterDTO} != null - позволяет уточнить, нужно ли показывать строку с ошибками -->
+                <tr data-th-if="${clusterDTO} != null">
+                    <td></td>
+                    <td>
+                        <!-- используем data-th-text для инлайнинга значений  -->
+                        <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
+                        <!-- Выражение ${#fields.hasErrors('clusterDTO.name')} возвращает true/false в зависимости,-->
+                        <!-- имеются ли у данного поля ошибки валидации -->
+                        <!-- Выражение ${#fields.errors('clusterDTO.name')} возвращает текст ошибки -->
+                        <!-- у данного поля установлена одна аннотация - следовательно может быть только одна ошибка -->
+                        <div
+                                class="alert alert-warning"
+                                data-th-text="${#fields.errors('clusterDTO.name')}"
+                                data-th-if="${#fields.hasErrors('clusterDTO.name')}"
+                        ></div>
+                    </td>
+                    <td>
+                        <!-- используем data-th-text для инлайнинга значений  -->
+                        <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
+                        <!-- Используем data-th-each, позволяющий размножить тег на количество ошибок-->
+                        <!-- Выражение ${#fields.hasErrors('clusterDTO.Cloud')} возвращает true/false в зависимости,-->
+                        <!-- имеются ли у данного поля ошибки валидации -->
+                        <!-- Выражение ${#fields.errors('clusterDTO.Cloud')} уже может вернуть несколько ошибок -->
+                        <!-- поэтому каждую из них будем выводить в отдельном теге -->
+                        <div
+                                class="alert alert-warning"
+                                data-th-if="${#fields.hasErrors('clusterDTO.cloud')}"
+                                data-th-each="err : ${#fields.errors('clusterDTO.cloud')}"
+                                data-th-text="${err}"
+                        ></div>
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>
