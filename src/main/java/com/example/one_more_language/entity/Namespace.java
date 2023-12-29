@@ -1,9 +1,6 @@
 package com.example.one_more_language.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -15,4 +12,7 @@ public class Namespace {
     private Integer resources;
     private String name;
     private String policy;
+
+    @ManyToOne
+    private Cluster cluster;
 }

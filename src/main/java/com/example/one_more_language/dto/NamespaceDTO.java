@@ -1,10 +1,11 @@
 package com.example.one_more_language.dto;
+import com.example.one_more_language.entity.Cluster;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import com.example.one_more_language.entity.Cluster;
+import com.example.one_more_language.entity.Namespace;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
@@ -19,16 +20,20 @@ public class NamespaceDTO {
     private String policy;
 
     @NotNull
-    private Integer size;
+    private Integer resources;
+
+    @NotNull
+    private Cluster cluster;
 
 
-    public Cluster toEntity() {
-        Cluster cluster = new Cluster();
-        cluster.setId(id);
-        cluster.setName(name);
-        cluster.setCloud(cloud);
-        cluster.setSize(size);
-        return cluster;
+    public Namespace toEntity() {
+        Namespace namespace = new Namespace();
+        namespace.setId(id);
+        namespace.setName(name);
+        namespace.setPolicy(policy);
+        namespace.setResources(resources);
+        namespace.setCluster(cluster);
+        return namespace;
     }
 
 }

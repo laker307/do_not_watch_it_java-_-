@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Редактирование кластера</title>
+    <title>Редактирование pod</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">ClusterStats</a>
+        <a class="navbar-brand" href="#">PodStats</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -21,45 +21,59 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <form action="/cluster/edit" method="post">
+            <form action="/pod/edit" method="post">
                 <!-- Используем скрытое поле (hidden), чтобы незаметно пробрасывать в форму id записи -->
                 <!-- Используем data-th-value для задания значения полю -->
-                <input id="id" name="id" hidden data-th-value="${clusterDTO.id}">
+                <input id="id" name="id" hidden data-th-value="${podDTO.id}">
                 <div class="row my-3">
-                    <label for="name" class="col-sm-2 col-form-label">Cluster</label>
+                    <label for="name" class="col-sm-2 col-form-label">Pod</label>
                     <div class="col-8">
-                        <input data-th-value="${clusterDTO.name}" type="text" class="form-control" name="name" id="name">
+                        <input data-th-value="${podDTO.name}" type="text" class="form-control" name="name" id="name">
                     </div>
                     <div
                             class="alert alert-warning"
-                            data-th-text="${#fields.errors('clusterDTO.name')}"
-                            data-th-if="${#fields.hasErrors('clusterDTO.name')}"
+                            data-th-text="${#fields.errors('podDTO.name')}"
+                            data-th-if="${#fields.hasErrors('podDTO.name')}"
                     ></div>
                 </div>
                 <div class="row mb-3">
-                    <label for="cloud" class="col-sm-2 col-form-label">Cloud</label>
+                    <label for="labels" class="col-sm-2 col-form-label">labels</label>
                     <div class="col-8">
-                        <input data-th-value="${clusterDTO.cloud}" type="text" class="form-control" name="cloud"
-                               id="cloud">
+                        <input data-th-value="${podDTO.labels}" type="text" class="form-control" name="labels"
+                               id="labels">
                     </div>
                     <div
                             class="alert alert-warning"
-                            data-th-if="${#fields.hasErrors('clusterDTO.cloud')}"
-                            data-th-each="err : ${#fields.errors('clusterDTO.cloud')}"
+                            data-th-if="${#fields.hasErrors('podDTO.labels')}"
+                            data-th-each="err : ${#fields.errors('podDTO.labels')}"
                             data-th-text="${err}"
                     ></div>
 
                 </div>
                 <div class="row mb-3">
-                    <label for="size" class="col-sm-2 col-form-label">Size</label>
+                    <label for="containers" class="col-sm-2 col-form-label">Containers</label>
                     <div class="col-8">
-                        <input data-th-value="${clusterDTO.size}" type="text" class="form-control" name="size"
-                               id="size">
+                        <input data-th-value="${podDTO.containers}" type="text" class="form-control" name="containers"
+                               id="containers">
                     </div>
                     <div
                             class="alert alert-warning"
-                            data-th-if="${#fields.hasErrors('clusterDTO.size')}"
-                            data-th-each="err : ${#fields.errors('clusterDTO.size')}"
+                            data-th-if="${#fields.hasErrors('podDTO.policy')}"
+                            data-th-each="err : ${#fields.errors('podDTO.policy')}"
+                            data-th-text="${err}"
+                    ></div>
+
+                </div>
+                <div class="row mb-3">
+                    <label for="namespace" class="col-sm-2 col-form-label">Namespace</label>
+                    <div class="col-8">
+                        <input data-th-value="${podDTO.namespace}" type="text" class="form-control" name="namespace"
+                               id="namespace">
+                    </div>
+                    <div
+                            class="alert alert-warning"
+                            data-th-if="${#fields.hasErrors('podDTO.namespace')}"
+                            data-th-each="err : ${#fields.errors('podDTO.namespace')}"
                             data-th-text="${err}"
                     ></div>
 

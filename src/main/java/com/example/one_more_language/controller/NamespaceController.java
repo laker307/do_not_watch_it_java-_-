@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/namespace")
 @RequiredArgsConstructor
-public class ClusterController {
+public class NamespaceController {
     private final NamespaceRepository namespaceRepository;
 
     @GetMapping("/")
@@ -43,47 +43,47 @@ public class ClusterController {
         namespace.setId(0);
 
         namespaceRepository.save(namespace);
-        return "redirect:/cluster/";
+        return "redirect:/namespace/";
     }
 
     @PostMapping("/add")
-    public String add(@Valid ClusterDTO cluster, BindingResult result, Model model) {
-        log.info("add cluster {}", cluster);
+    public String add(@Valid NamespaceDTO namespace, BindingResult result, Model model) {
+        log.info("add namespace {}", namespace);
         if (!result.hasErrors()) {
-            clusterRepository.save(cluster.toEntity());
+            namespaceRepository.save(namespace.toEntity());
         }
         return index(model);
     }
 
     @GetMapping("edit/{id}")
     public String edit(@PathVariable String id, Model model) {
-        Optional<Cluster> cluster = clusterRepository.findById(id);
-        cluster.ifPresent(value -> {
-            model.addAttribute("clusterDTO", value);
+        Optional<Namespace> namespace = namespaceRepository.findById(id);
+        namespace.ifPresent(value -> {
+            model.addAttribute("namespaceDTO", value);
         });
 
-        return "edit-cluster";
+        return "edit-namespace";
     }
 
     @PostMapping("edit")
-    public String edit(@Valid ClusterDTO request, HttpServletRequest servletRequest, BindingResult result) {
+    public String edit(@Valid NamespaceDTO request, HttpServletRequest servletRequest, BindingResult result) {
         if (!result.hasErrors()) {
-            Cluster cluster = request.toEntity();
-            clusterRepository.save(cluster);
+            Namespace namespace = request.toEntity();
+            namespaceRepository.save(namespace);
         }
-        return "redirect:/cluster/";
+        return "redirect:/namespace/";
     }
 
-    /*@GetMapping("{clusterId}")
-    public String artist(@PathVariable Strng clusterId, Model model) {
-        model.addAttribute("artist", clusterRepository.findById(clusterId).get());
-        return "cluster-view";
+    /*@GetMapping("{namespaceId}")
+    public String artist(@PathVariable Strng namespaceId, Model model) {
+        model.addAttribute("artist", namespaceRepository.findById(namespaceId).get());
+        return "namespace-view";
     }*/
 
     @PostMapping("/remove")
     public String remove(String id, Model model) {
-        log.info("remove cluster with id {}", id);
-        clusterRepository.deleteById(id);
+        log.info("remove namespace with id {}", id);
+        namespaceRepository.deleteById(id);
         return index(model);
 
 

@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Clusters</title>
+    <title>Pods</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">ClustersStats</a>
+        <a class="navbar-brand" href="#">PodsStats</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Главная</a>
@@ -26,32 +26,34 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Cloud</th>
-                    <th scope="col">Size</th>
+                    <th scope="col">Labels</th>
+                    <th scope="col">Containers</th>
+                    <th scope="col">Namespace</th>
                     <th scope="col">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- этот tr будет размножен на каждую запись списка ${list} -->
-                <!-- clustert содержит объект записи, а index - информацию о позиции -->
-                <tr data-th-each="cluster,index : ${list}">
+                <!-- pod содержит объект записи, а index - информацию о позиции -->
+                <tr data-th-each="pod,index : ${list}">
                     <!-- index.count - нумерация элементов коллекции, начиная с 1 -->
                     <th scope="row" data-th-text="${index.count}"></th>
                     <!-- используем data-th-text для инлайнинга значений  -->
-                    <td data-th-text="${cluster.name}"></td>
-                    <td data-th-text="${cluster.cloud}"></td>
-                    <td data-th-text="${cluster.size}"></td>
+                    <td data-th-text="${pod.name}"></td>
+                    <td data-th-text="${pod.labels}"></td>
+                    <td data-th-text="${pod.containers}"></td>
+                    <td data-th-text="${pod.namespace}"></td>
                     <td class="d-flex flex-row justify-content-around">
                         <!-- используем data-th-href задания параметризированной ссылки  -->
                         <!-- используем || как параметризированную строку  -->
-                        <a data-th-href="${cluster.id}" class="btn btn-primary">
+                        <a data-th-href="${pod.id}" class="btn btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                 <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                             </svg>
                         </a>
                         <!-- используем data-th-href задания параметризированной ссылки  -->
                         <!-- используем || как параметризированную строку  -->
-                        <a data-th-href="@{|edit/${cluster.id}|}" class="btn btn-warning">
+                        <a data-th-href="@{|edit/${pod.id}|}" class="btn btn-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-pen" viewBox="0 0 16 16">
                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"></path>
@@ -61,7 +63,7 @@
                         <form action="remove" method="post">
                             <!-- Используем скрытое поле (hidden), чтобы незаметно пробрасывать в форму id записи -->
                             <!-- Используем data-th-value для задания значения полю -->
-                            <input id="id" name="id" hidden data-th-value="${cluster.id}">
+                            <input id="id" name="id" hidden data-th-value="${pod.id}">
                             <button type="submit" class="btn btn-danger">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-trash" viewBox="0 0 16 16">
@@ -79,17 +81,20 @@
                         <th scope="row"></th>
                         <td> <!-- Во второй прописываем поле для задания имени -->
                             <!-- Используем data-th-value для задания начального значения поля -->
-                            <!-- Выражение ${clusterDTO}?${clusterDTO.name}:'' использует тернарный оператор -->
-                            <!-- Выражение ${clusterDTO}? задает условие "если объект(ключ) clusterDTO есть в модели" -->
-                            <!-- Если условие верно, то, значит, пользователь допустил ошибку, и мы вернули его предыдущий ввод в объекте clusterDTO -->
-                            <!-- Иначе, если объекта clusterDTO нет, то никакого значения подставлять не требуется -->
-                            <input class="w-75" type="text" id="name" name="name" data-th-value="${clusterDTO}?${clusterDTO.name}:''">
+                            <!-- Выражение ${podDTO}?${podDTO.name}:'' использует тернарный оператор -->
+                            <!-- Выражение ${podeDTO}? задает условие "если объект(ключ) podDTO есть в модели" -->
+                            <!-- Если условие верно, то, значит, пользователь допустил ошибку, и мы вернули его предыдущий ввод в объекте podDTO -->
+                            <!-- Иначе, если объекта podDTO нет, то никакого значения подставлять не требуется -->
+                            <input class="w-75" type="text" id="name" name="name" data-th-value="${podDTO}?${podDTO.name}:''">
                         </td>
                         <td>
-                            <input class="w-75" type="text" id="Cloud" name="Cloud" data-th-value="${clusterDTO}?${clusterDTO.Cloud}:''">
+                            <input class="w-75" type="text" id="labels" name="labels" data-th-value="${podDTO}?${podDTO.labels}:''">
                         </td>
                         <td>
-                            <input class="w-75" type="text" id="size" name="size" data-th-value="${clusterDTO}?${clusterDTO.sizes}:''">
+                            <input class="w-75" type="text" id="containers" name="containers" data-th-value="${podDTO}?${podDTO.containers}:''">
+                        </td>
+                        <td>
+                            <input class="w-75" type="text" id="namespace" name="namespace" data-th-value="${podDTO}?${podDTO.namespace}:''">
                         </td>
                         <td class="display-flex justify-content-center">
                             <button type="submit" class="btn btn-success">
@@ -104,35 +109,20 @@
                 </tr>
                 <!-- Дополнительная строка с информацией об ошибках валидации -->
                 <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
-                <!-- Выражение: ${clusterDTO} != null - позволяет уточнить, нужно ли показывать строку с ошибками -->
-                <tr data-th-if="${clusterDTO} != null">
+                <!-- Выражение: ${podDTO} != null - позволяет уточнить, нужно ли показывать строку с ошибками -->
+                <tr data-th-if="${podDTO} != null">
                     <td></td>
                     <td>
                         <!-- используем data-th-text для инлайнинга значений  -->
                         <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
-                        <!-- Выражение ${#fields.hasErrors('clusterDTO.name')} возвращает true/false в зависимости,-->
+                        <!-- Выражение ${#fields.hasErrors('podDTO.name')} возвращает true/false в зависимости,-->
                         <!-- имеются ли у данного поля ошибки валидации -->
-                        <!-- Выражение ${#fields.errors('clusterDTO.name')} возвращает текст ошибки -->
+                        <!-- Выражение ${#fields.errors('podDTO.name')} возвращает текст ошибки -->
                         <!-- у данного поля установлена одна аннотация - следовательно может быть только одна ошибка -->
                         <div
                                 class="alert alert-warning"
-                                data-th-text="${#fields.errors('clusterDTO.name')}"
-                                data-th-if="${#fields.hasErrors('clusterDTO.name')}"
-                        ></div>
-                    </td>
-                    <td>
-                        <!-- используем data-th-text для инлайнинга значений  -->
-                        <!-- Используем data-th-if, позволяющий задавать условный рендеринг тега-->
-                        <!-- Используем data-th-each, позволяющий размножить тег на количество ошибок-->
-                        <!-- Выражение ${#fields.hasErrors('clusterDTO.Cloud')} возвращает true/false в зависимости,-->
-                        <!-- имеются ли у данного поля ошибки валидации -->
-                        <!-- Выражение ${#fields.errors('clusterDTO.Cloud')} уже может вернуть несколько ошибок -->
-                        <!-- поэтому каждую из них будем выводить в отдельном теге -->
-                        <div
-                                class="alert alert-warning"
-                                data-th-if="${#fields.hasErrors('clusterDTO.cloud')}"
-                                data-th-each="err : ${#fields.errors('clusterDTO.cloud')}"
-                                data-th-text="${err}"
+                                data-th-text="${#fields.errors('podDTO.name')}"
+                                data-th-if="${#fields.hasErrors('podDTO.name')}"
                         ></div>
                     </td>
                     <td></td>
